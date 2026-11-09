@@ -20,3 +20,9 @@ Connect-ExchangeOnline -UserPrincipalName adm-yourname@yourdomain.com
 Set-AdminAuditLogConfig -UnifiedAuditLogIngestionEnabled $true  
 And the last command can take up to 60 minutes to complete or fast in this situation:   
 ![Status](./images/status.png)  
+Then run to get the license: Get-MgSubscribedSku | Select SkuPartNumber, ConsumedUnits, @{n='Total';e={$_.PrepaidUnits.Enabled}}    
+And see this:   
+![Error3](./images/)    
+Saying that the cause is PowerShell 5.1 since the current version is PowerShell 7.0. Update by running winget install --id Microsoft.PowerShell -e. Then verify with pwsh -v and switch to the latest with pwsh and to check the version with $PSVersionTable.PSVersion:    
+![Version](./images/version.png)    
+Then re-install with Install-Module Microsoft.Graph, ExchangeOnlineManagement -Scope CurrentUser -Force 
