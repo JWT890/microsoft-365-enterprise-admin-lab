@@ -9,6 +9,9 @@ Connect-MgGraph -Scopes "User.ReadWrite.All","Group.ReadWrite.All","Directory.Re
 Connect-ExchangeOnline -UserPrincipalName jontaylor@patchlab26.onmicrosoft.com  
 Connect-ExchangeOnline -UserPrincipalName adm-yourname@yourdomain.com   
 
+
+# Identity and Foundation
+
 After getting connected, turn on logging:   
 Set-AdminAuditLogConfig -UnifiedAuditLogIngestionEnabled $true and if this pops up: 
 ![Error](./images/error.png)    
@@ -33,6 +36,20 @@ Then cd into the folder on host computer and to allow downloaded scripts to run,
 Be good to add a few folders in the repo so run:    
 mkdir scripts\common, scripts\identity, scripts\conditional-access, scripts\security, scripts\exchange, scripts\incident-response, data -Force
 Then type Move-Item C:\Users\user\Downloads\LabCommon.psm1 scripts\common\  
-*This script was made by Claude*    
+*These scripts was made by Claude*    
 Then run Import-Module .\scripts\common\LabCommon.psm1 -Force and import the script and if this occurs: 
 ![Error4](./images/error4.png)  
+The solution is to unblock the file by running: 
+Unblock-File .\scripts\common\LabCommon.psm1 and checking the policy by running Get-ExecutionPolicy-List and see if CurrentUser says RemoteSigned or not. If not run Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force.   
+This time it will work so run: Connect-Lab -AdminUpn adm-yourname@yourdomain.com with the admin domain and wait a couple times for sign in prompts. 
+Then check how many licenses are left with: Get-MgSubscribedSku | Select SkuPartNumber, ConsumedUnits, @{n='Total';e={$_.PrepaidUnits.Enabled}} and unlock the rest of the files with Get-ChildItem . - Recurse File | Unblock-File which should show.  
+Then find the domain with for user addresses by typing Get-MgDomain | Select Id, IsDefault, IsVerified. 
+Then run: .\scripts\identity\New-LabUsers.ps1 -Domain jon-maillab.org -CreateDepartmentGroups -WhatIf and watch the dry run go. 
+![Run](./images/run.png)    
+The users and department groups have been created.  
+And check Microsoft 365:    
+![Users](./images/users.png)    
+And to fully verify run these from the screenshot:  
+![Test](./images/test.png)  
+
+# Access

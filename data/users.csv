@@ -1,0 +1,19 @@
+Alias,FirstName,LastName,Department,JobTitle,Manager
+cmorgan,Casey,Morgan,Executive,Chief Executive Officer,
+jhartley,Jordan,Hartley,Executive,Chief Financial Officer,cmorgan
+anguyen,Ava,Nguyen,Finance,Finance Manager,jhartley
+dpatel,Dev,Patel,Finance,Financial Analyst,anguyen
+lchen,Lena,Chen,Finance,Accounts Payable Specialist,anguyen
+mlee,Marcus,Lee,Sales,Sales Director,cmorgan
+sokafor,Sade,Okafor,Sales,Account Executive,mlee
+tbrooks,Tom,Brooks,Sales,Account Executive,mlee
+vsato,Victor,Sato,Sales,Sales Development Rep,mlee
+pshah,Priya,Shah,IT,IT Manager,cmorgan
+rweiss,Ryan,Weiss,IT,Systems Administrator,pshah
+kdube,Kayla,Dube,IT,Help Desk Technician,pshah
+ngarcia,Nina,Garcia,HR,HR Manager,cmorgan
+bfoster,Ben,Foster,HR,HR Generalist,ngarcia
+ijones,Isla,Jones,HR,Recruiter,ngarcia
+omiller,Olivia,Miller,Operations,Operations Manager,cmorgan
+hkhan,Hassan,Khan,Operations,Logistics Coordinator,omiller
+eross,Elena,Ross,Operations,Procurement Specialist,omiller

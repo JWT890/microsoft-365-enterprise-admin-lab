@@ -1,0 +1,79 @@
+2026-11-12T04:27:51Z [WHATIF] [gator] Would create cmorgan@jon-maillab.org
+2026-11-12T04:27:51Z [WHATIF] [gator] Would create jhartley@jon-maillab.org
+2026-11-12T04:27:52Z [WHATIF] [gator] Would create anguyen@jon-maillab.org
+2026-11-12T04:27:52Z [WHATIF] [gator] Would create dpatel@jon-maillab.org
+2026-11-12T04:27:52Z [WHATIF] [gator] Would create lchen@jon-maillab.org
+2026-11-12T04:27:52Z [WHATIF] [gator] Would create mlee@jon-maillab.org
+2026-11-12T04:27:52Z [WHATIF] [gator] Would create sokafor@jon-maillab.org
+2026-11-12T04:27:52Z [WHATIF] [gator] Would create tbrooks@jon-maillab.org
+2026-11-12T04:27:53Z [WHATIF] [gator] Would create vsato@jon-maillab.org
+2026-11-12T04:27:53Z [WHATIF] [gator] Would create pshah@jon-maillab.org
+2026-11-12T04:27:53Z [WHATIF] [gator] Would create rweiss@jon-maillab.org
+2026-11-12T04:27:53Z [WHATIF] [gator] Would create kdube@jon-maillab.org
+2026-11-12T04:27:53Z [WHATIF] [gator] Would create ngarcia@jon-maillab.org
+2026-11-12T04:27:53Z [WHATIF] [gator] Would create bfoster@jon-maillab.org
+2026-11-12T04:27:54Z [WHATIF] [gator] Would create ijones@jon-maillab.org
+2026-11-12T04:27:54Z [WHATIF] [gator] Would create omiller@jon-maillab.org
+2026-11-12T04:27:54Z [WHATIF] [gator] Would create hkhan@jon-maillab.org
+2026-11-12T04:27:54Z [WHATIF] [gator] Would create eross@jon-maillab.org
+2026-11-12T04:27:54Z [WARN] [gator] Skipping manager link for jhartley -> cmorgan (user not found or not created)
+2026-11-12T04:27:54Z [WARN] [gator] Skipping manager link for anguyen -> jhartley (user not found or not created)
+2026-11-12T04:27:54Z [WARN] [gator] Skipping manager link for dpatel -> anguyen (user not found or not created)
+2026-11-12T04:27:54Z [WARN] [gator] Skipping manager link for lchen -> anguyen (user not found or not created)
+2026-11-12T04:27:54Z [WARN] [gator] Skipping manager link for mlee -> cmorgan (user not found or not created)
+2026-11-12T04:27:54Z [WARN] [gator] Skipping manager link for sokafor -> mlee (user not found or not created)
+2026-11-12T04:27:54Z [WARN] [gator] Skipping manager link for tbrooks -> mlee (user not found or not created)
+2026-11-12T04:27:54Z [WARN] [gator] Skipping manager link for vsato -> mlee (user not found or not created)
+2026-11-12T04:27:54Z [WARN] [gator] Skipping manager link for pshah -> cmorgan (user not found or not created)
+2026-11-12T04:27:54Z [WARN] [gator] Skipping manager link for rweiss -> pshah (user not found or not created)
+2026-11-12T04:27:54Z [WARN] [gator] Skipping manager link for kdube -> pshah (user not found or not created)
+2026-11-12T04:27:54Z [WARN] [gator] Skipping manager link for ngarcia -> cmorgan (user not found or not created)
+2026-11-12T04:27:54Z [WARN] [gator] Skipping manager link for bfoster -> ngarcia (user not found or not created)
+2026-11-12T04:27:54Z [WARN] [gator] Skipping manager link for ijones -> ngarcia (user not found or not created)
+2026-11-12T04:27:54Z [WARN] [gator] Skipping manager link for omiller -> cmorgan (user not found or not created)
+2026-11-12T04:27:54Z [WARN] [gator] Skipping manager link for hkhan -> omiller (user not found or not created)
+2026-11-12T04:27:54Z [WARN] [gator] Skipping manager link for eross -> omiller (user not found or not created)
+2026-11-12T04:27:58Z [INFO] [gator] Joiner run complete. Mailboxes can take a few minutes to provision after licensing.
+2026-11-12T04:31:36Z [ACTION] [gator] Created and licensed cmorgan@jon-maillab.org
+2026-11-12T04:31:37Z [ACTION] [gator] Created and licensed jhartley@jon-maillab.org
+2026-11-12T04:31:38Z [ACTION] [gator] Created and licensed anguyen@jon-maillab.org
+2026-11-12T04:31:39Z [ACTION] [gator] Created and licensed dpatel@jon-maillab.org
+2026-11-12T04:31:40Z [ACTION] [gator] Created and licensed lchen@jon-maillab.org
+2026-11-12T04:31:41Z [ACTION] [gator] Created and licensed mlee@jon-maillab.org
+2026-11-12T04:31:42Z [ACTION] [gator] Created and licensed sokafor@jon-maillab.org
+2026-11-12T04:31:43Z [ACTION] [gator] Created and licensed tbrooks@jon-maillab.org
+2026-11-12T04:31:44Z [ACTION] [gator] Created and licensed vsato@jon-maillab.org
+2026-11-12T04:31:45Z [ACTION] [gator] Created and licensed pshah@jon-maillab.org
+2026-11-12T04:31:46Z [ACTION] [gator] Created and licensed rweiss@jon-maillab.org
+2026-11-12T04:31:47Z [ACTION] [gator] Created and licensed kdube@jon-maillab.org
+2026-11-12T04:31:48Z [ACTION] [gator] Created and licensed ngarcia@jon-maillab.org
+2026-11-12T04:31:48Z [ACTION] [gator] Created and licensed bfoster@jon-maillab.org
+2026-11-12T04:31:49Z [ACTION] [gator] Created and licensed ijones@jon-maillab.org
+2026-11-12T04:31:50Z [ACTION] [gator] Created and licensed omiller@jon-maillab.org
+2026-11-12T04:31:51Z [ACTION] [gator] Created and licensed hkhan@jon-maillab.org
+2026-11-12T04:31:52Z [ACTION] [gator] Created and licensed eross@jon-maillab.org
+2026-11-12T04:31:52Z [ACTION] [gator] Manager set: jhartley -> cmorgan
+2026-11-12T04:31:53Z [ACTION] [gator] Manager set: anguyen -> jhartley
+2026-11-12T04:31:53Z [ACTION] [gator] Manager set: dpatel -> anguyen
+2026-11-12T04:31:53Z [ACTION] [gator] Manager set: lchen -> anguyen
+2026-11-12T04:31:54Z [ACTION] [gator] Manager set: mlee -> cmorgan
+2026-11-12T04:31:54Z [ACTION] [gator] Manager set: sokafor -> mlee
+2026-11-12T04:31:54Z [ACTION] [gator] Manager set: tbrooks -> mlee
+2026-11-12T04:31:55Z [ACTION] [gator] Manager set: vsato -> mlee
+2026-11-12T04:31:55Z [ACTION] [gator] Manager set: pshah -> cmorgan
+2026-11-12T04:31:55Z [ACTION] [gator] Manager set: rweiss -> pshah
+2026-11-12T04:31:56Z [ACTION] [gator] Manager set: kdube -> pshah
+2026-11-12T04:31:56Z [ACTION] [gator] Manager set: ngarcia -> cmorgan
+2026-11-12T04:31:56Z [ACTION] [gator] Manager set: bfoster -> ngarcia
+2026-11-12T04:31:57Z [ACTION] [gator] Manager set: ijones -> ngarcia
+2026-11-12T04:31:57Z [ACTION] [gator] Manager set: omiller -> cmorgan
+2026-11-12T04:31:57Z [ACTION] [gator] Manager set: hkhan -> omiller
+2026-11-12T04:31:58Z [ACTION] [gator] Manager set: eross -> omiller
+2026-11-12T04:31:58Z [ACTION] [gator] Created dynamic group DG-Executive (membership can take several minutes to populate; needs Entra ID P1)
+2026-11-12T04:31:59Z [ACTION] [gator] Created dynamic group DG-Finance (membership can take several minutes to populate; needs Entra ID P1)
+2026-11-12T04:32:00Z [ACTION] [gator] Created dynamic group DG-HR (membership can take several minutes to populate; needs Entra ID P1)
+2026-11-12T04:32:00Z [ACTION] [gator] Created dynamic group DG-IT (membership can take several minutes to populate; needs Entra ID P1)
+2026-11-12T04:32:01Z [ACTION] [gator] Created dynamic group DG-Operations (membership can take several minutes to populate; needs Entra ID P1)
+2026-11-12T04:32:01Z [ACTION] [gator] Created dynamic group DG-Sales (membership can take several minutes to populate; needs Entra ID P1)
+2026-11-12T04:32:01Z [WARN] [gator] Initial passwords written to C:\Users\gator\microsoft-365-enterprise-admin-lab\scripts\identity\..\..\output\initial-passwords.csv (gitignored). Delete after use.
+2026-11-12T04:32:01Z [INFO] [gator] Joiner run complete. Mailboxes can take a few minutes to provision after licensing.
