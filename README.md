@@ -22,7 +22,17 @@ And the last command can take up to 60 minutes to complete or fast in this situa
 ![Status](./images/status.png)  
 Then run to get the license: Get-MgSubscribedSku | Select SkuPartNumber, ConsumedUnits, @{n='Total';e={$_.PrepaidUnits.Enabled}}    
 And see this:   
-![Error3](./images/)    
+![Error3](./images/error3.png)      
 Saying that the cause is PowerShell 5.1 since the current version is PowerShell 7.0. Update by running winget install --id Microsoft.PowerShell -e. Then verify with pwsh -v and switch to the latest with pwsh and to check the version with $PSVersionTable.PSVersion:    
 ![Version](./images/version.png)    
 Then re-install with Install-Module Microsoft.Graph, ExchangeOnlineManagement -Scope CurrentUser -Force 
+And when this happens:  
+![Yellow](./images/yellow.png)
+Check the PowerShell version by running $PSVersionTable.PSVersion.Major and run Get-InstalledModule Microsoft.Graph, ExchangeOnlineManagement | Select Name, Version. If it prints the current version number then its fine. For PowerShell if its 7, also good.    
+Then cd into the folder on host computer and to allow downloaded scripts to run, type: Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned. Then run Get-ChildItem C:\Users\user\github name -Recurse -File | Unblock-File.    
+Be good to add a few folders in the repo so run:    
+mkdir scripts\common, scripts\identity, scripts\conditional-access, scripts\security, scripts\exchange, scripts\incident-response, data -Force
+Then type Move-Item C:\Users\user\Downloads\LabCommon.psm1 scripts\common\  
+*This script was made by Claude*    
+Then run Import-Module .\scripts\common\LabCommon.psm1 -Force and import the script and if this occurs: 
+![Error4](./images/error4.png)  
