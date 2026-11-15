@@ -45,11 +45,30 @@ This time it will work so run: Connect-Lab -AdminUpn adm-yourname@yourdomain.com
 Then check how many licenses are left with: Get-MgSubscribedSku | Select SkuPartNumber, ConsumedUnits, @{n='Total';e={$_.PrepaidUnits.Enabled}} and unlock the rest of the files with Get-ChildItem . - Recurse File | Unblock-File which should show.  
 Then find the domain with for user addresses by typing Get-MgDomain | Select Id, IsDefault, IsVerified. 
 Then run: .\scripts\identity\New-LabUsers.ps1 -Domain jon-maillab.org -CreateDepartmentGroups -WhatIf and watch the dry run go. 
+Then run it live without -WhatIf:   
 ![Run](./images/run.png)    
 The users and department groups have been created.  
 And check Microsoft 365:    
 ![Users](./images/users.png)    
 And to fully verify run these from the screenshot:  
 ![Test](./images/test.png)  
+Now since the users are created its time to do a leaver test on two users for a test run by running .\scripts\identity\Invoke-Leaver.ps1 -UserPrincipalName kdube@jon-maillab.org -WhatIf:  
+![One](./images/one.png)    
+![Two](./images/two.png)    
+This shows both the manager links for both users and the steps taken such as password reset, mailbox conversion, and more. Then run a live version next without -WhatIf.    
+![Error5](./images/error5.png)  
+Note the red means the password reset failed but everything else worked.    
+*Downloaded a new LabCommon.psm1 from Claude*
+Then delete the old one and put the new LabCommon.psm1 in there instead, then run Get-ChildItem . -Recurse -File | Unblock-File. Then close and open a new PowerShell script.   
+In the new PowerShell script run:   
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Bypass -Force   
+Import-Module .\scripts\common\LabCommon.psm1 -Force    
+$null = Reset-LabPassword -UserPrincipalName kdube@jon-maillab.org and should show  
+![Action](./images/action.png)  
+Then verify by running these commands:  
+![Script](./images/script.png)  
+Then check with ecross by running:  
+.\scripts\identity\Invoke-Leaser.ps1 -UserPrincipalName eross@jon-maillab.org with no errors this time: 
+![Ran](./images/ran.png)    
 
 # Access

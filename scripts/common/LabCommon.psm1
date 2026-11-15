@@ -9,6 +9,11 @@
 #>
 Set-StrictMode -Version Latest
 
+# Module functions do NOT inherit the calling script's $ErrorActionPreference. Without this, a failed Graph call
+# prints a red error but the function carries on and logs a false "success".
+$ErrorActionPreference = 'Stop'
+$PSDefaultParameterValues['*:ErrorAction'] = 'Stop'   # explicit per-cmdlet default; calls that pass -ErrorAction themselves still win
+
 $script:LabLogPath = $null
 
 #region Connection and logging
@@ -20,7 +25,8 @@ function Connect-Lab {
             'User.ReadWrite.All', 'Group.ReadWrite.All', 'Directory.ReadWrite.All',
             'RoleManagement.ReadWrite.Directory', 'Policy.ReadWrite.ConditionalAccess',
             'Policy.Read.All', 'Application.Read.All', 'UserAuthenticationMethod.ReadWrite.All',
-            'IdentityRiskyUser.ReadWrite.All', 'AuditLog.Read.All', 'DelegatedPermissionGrant.ReadWrite.All'
+            'IdentityRiskyUser.ReadWrite.All', 'AuditLog.Read.All', 'DelegatedPermissionGrant.ReadWrite.All',
+            'User-PasswordProfile.ReadWrite.All'
         ),
         [switch]$SkipGraph,
         [switch]$SkipExchange

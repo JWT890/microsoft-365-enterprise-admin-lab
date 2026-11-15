@@ -1,0 +1,52 @@
+2026-11-12T04:46:05Z [INFO] [gator] Leaver: kdube@jon-maillab.org manager=pshah@jon-maillab.org dryRun=True
+2026-11-12T04:46:05Z [WHATIF] [gator] Would block sign-in: kdube@jon-maillab.org
+2026-11-12T04:46:05Z [WHATIF] [gator] Would revoke sessions: kdube@jon-maillab.org
+2026-11-12T04:46:05Z [WHATIF] [gator] Would reset password: kdube@jon-maillab.org
+2026-11-12T04:46:05Z [WHATIF] [gator] Would convert kdube@jon-maillab.org mailbox to shared
+2026-11-12T04:46:05Z [WHATIF] [gator] Would grant pshah@jon-maillab.org Full Access to kdube@jon-maillab.org
+2026-11-12T04:46:06Z [WHATIF] [gator] Would remove kdube@jon-maillab.org from None NA
+2026-11-12T04:46:06Z [INFO] [gator] Skipping dynamic group DG-IT (membership follows attributes)
+2026-11-12T04:46:06Z [WHATIF] [gator] Would remove 1 license(s) from kdube@jon-maillab.org
+2026-11-12T04:46:06Z [INFO] [gator] Leaver complete for kdube@jon-maillab.org. Remaining manual steps: OneDrive hand-off, devices, shared resources.
+2026-11-15T03:51:22Z [INFO] [gator] Leaver: kdube@jon-maillab.org manager=pshah@jon-maillab.org dryRun=True
+2026-11-15T03:51:22Z [WHATIF] [gator] Would block sign-in: kdube@jon-maillab.org
+2026-11-15T03:51:22Z [WHATIF] [gator] Would revoke sessions: kdube@jon-maillab.org
+2026-11-15T03:51:22Z [WHATIF] [gator] Would reset password: kdube@jon-maillab.org
+2026-11-15T03:51:23Z [WHATIF] [gator] Would convert kdube@jon-maillab.org mailbox to shared
+2026-11-15T03:51:23Z [WHATIF] [gator] Would grant pshah@jon-maillab.org Full Access to kdube@jon-maillab.org
+2026-11-15T03:51:23Z [WHATIF] [gator] Would remove kdube@jon-maillab.org from None NA
+2026-11-15T03:51:23Z [INFO] [gator] Skipping dynamic group DG-IT (membership follows attributes)
+2026-11-15T03:51:23Z [WHATIF] [gator] Would remove 1 license(s) from kdube@jon-maillab.org
+2026-11-15T03:51:23Z [INFO] [gator] Leaver complete for kdube@jon-maillab.org. Remaining manual steps: OneDrive hand-off, devices, shared resources.
+2026-11-15T03:52:16Z [INFO] [gator] Leaver: eross@jon-maillab.org manager=omiller@jon-maillab.org dryRun=True
+2026-11-15T03:52:16Z [WHATIF] [gator] Would block sign-in: eross@jon-maillab.org
+2026-11-15T03:52:16Z [WHATIF] [gator] Would revoke sessions: eross@jon-maillab.org
+2026-11-15T03:52:16Z [WHATIF] [gator] Would reset password: eross@jon-maillab.org
+2026-11-15T03:52:17Z [WHATIF] [gator] Would convert eross@jon-maillab.org mailbox to shared
+2026-11-15T03:52:17Z [WHATIF] [gator] Would grant omiller@jon-maillab.org Full Access to eross@jon-maillab.org
+2026-11-15T03:52:17Z [WHATIF] [gator] Would remove eross@jon-maillab.org from None NA
+2026-11-15T03:52:17Z [INFO] [gator] Skipping dynamic group DG-Operations (membership follows attributes)
+2026-11-15T03:52:17Z [WHATIF] [gator] Would remove 1 license(s) from eross@jon-maillab.org
+2026-11-15T03:52:17Z [INFO] [gator] Leaver complete for eross@jon-maillab.org. Remaining manual steps: OneDrive hand-off, devices, shared resources.
+2026-11-15T04:26:27Z [INFO] [gator] Leaver: kdube@jon-maillab.org manager=pshah@jon-maillab.org dryRun=False
+2026-11-15T04:26:27Z [ACTION] [gator] Blocked sign-in: kdube@jon-maillab.org
+2026-11-15T04:26:29Z [ACTION] [gator] Revoked sessions: kdube@jon-maillab.org (already-issued access tokens can live up to ~1 hour unless CAE applies)
+2026-11-15T04:26:29Z [ACTION] [gator] Reset password: kdube@jon-maillab.org (ForceChange=False)
+2026-11-15T04:26:37Z [ACTION] [gator] Converted kdube@jon-maillab.org mailbox to shared
+2026-11-15T04:27:11Z [ACTION] [gator] Granted pshah@jon-maillab.org Full Access to kdube@jon-maillab.org
+2026-11-15T04:27:12Z [ACTION] [gator] Hidden kdube@jon-maillab.org from address lists
+2026-11-15T04:27:17Z [ACTION] [gator] Removed kdube@jon-maillab.org from None NA
+2026-11-15T04:27:17Z [INFO] [gator] Skipping dynamic group DG-IT (membership follows attributes)
+2026-11-15T04:27:17Z [ACTION] [gator] Removed 1 license(s) from kdube@jon-maillab.org
+2026-11-15T04:27:17Z [INFO] [gator] Leaver complete for kdube@jon-maillab.org. Remaining manual steps: OneDrive hand-off, devices, shared resources.
+2026-11-15T05:10:16Z [INFO] [gator] Leaver: eross@jon-maillab.org manager=omiller@jon-maillab.org dryRun=False
+2026-11-15T05:10:16Z [ACTION] [gator] Blocked sign-in: eross@jon-maillab.org
+2026-11-15T05:10:18Z [ACTION] [gator] Revoked sessions: eross@jon-maillab.org (already-issued access tokens can live up to ~1 hour unless CAE applies)
+2026-11-15T05:10:19Z [ACTION] [gator] Reset password: eross@jon-maillab.org (ForceChange=False)
+2026-11-15T05:10:28Z [ACTION] [gator] Converted eross@jon-maillab.org mailbox to shared
+2026-11-15T05:11:02Z [ACTION] [gator] Granted omiller@jon-maillab.org Full Access to eross@jon-maillab.org
+2026-11-15T05:11:03Z [ACTION] [gator] Hidden eross@jon-maillab.org from address lists
+2026-11-15T05:11:08Z [ACTION] [gator] Removed eross@jon-maillab.org from None NA
+2026-11-15T05:11:08Z [INFO] [gator] Skipping dynamic group DG-Operations (membership follows attributes)
+2026-11-15T05:11:08Z [ACTION] [gator] Removed 1 license(s) from eross@jon-maillab.org
+2026-11-15T05:11:08Z [INFO] [gator] Leaver complete for eross@jon-maillab.org. Remaining manual steps: OneDrive hand-off, devices, shared resources.
