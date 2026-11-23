@@ -94,3 +94,73 @@ Then live without -WhatIf.
 ![Live](./images/live.png)  
 Since its read only go to the Entra admin center -> Conditional Access -> Policies and they should be there:    
 ![Policy](./images/policy.png)  
+Then click on CA001, click on edit or view and get here:    
+![Edit](./images/edit.png)  
+Then click on users and set to specific and exclude SG-CA-Exclusions and save it.   
+Then go check security defaults by going to Overview -> Properties -> scroll down and click on manage security defaults and change it to disabled from enabled with the reason being my organization is using conditional access.   
+Then go to Authentication Methods and make sure that Microsoft Authenticator and Temporary Access Pass is enabled. With TAP enabled, temporary access pass codes can be sent out and used for different users run:  
+foreach ($u in 'dpatel','mlee','pshah','anguyen','adm-secops','adm-helpdesk') {
+  $tap = New-MgUserAuthenticationTemporaryAccessPassMethod -UserId "$u@jon-maillab.org" -BodyParameter @{ lifetimeInMinutes = 60; isUsableOnce = $false }
+  [pscustomobject]@{ User = $u; TAP = $tap.TemporaryAccessPass }
+}
+Then sign as one of the users in a private window with their email and sign in with the TAP code to sign in and get here:   
+![SIgned](./images/signed.png)  
+Then go to outlook.office.com and teams.microsoft.com to verify:    
+![Outlook](./images/outlook.png)    
+![Teams](./images/teams.png)    
+And through checking sign in logs through Monitoring & Health:  
+![Events](./images/events.png)  
+And through read only view: 
+![Read](./images/read.png)  
+And from checking the admin sign in from earlier:   
+![Admin](./images/admin.png)    
+Which shows not applicable since its a break glass account. 
+And when checking the second admin account: 
+![Admin1](./images/admin1.png)  
+Then sign in with TAP as one of the adm accounts and reach here:    
+![Error](./images/error6.png)   
+Then sign as another adm account, such as adm-secops since last was adm-helpdesk and reach the same error message as before since the script created them without licenses. Then go check the logs: 
+![Sec](./images/sec.png)    
+With CA001 it shows not applied for all users since its a regular member, lets check one of adm-helpdesk's logs:    
+![Scope](./images/scope.png)    
+From looking over this, adm-helpdesk is not covered by CA002 with the cause being the role doesn't pick up admin assignments, so run this:  
+# 1. Group of all admin accounts
+$g = New-MgGroup -DisplayName 'SG-Admin-Accounts' -Description 'All admin accounts (CA002 targets this in addition to roles)' -MailEnabled:$false -MailNickname 'sgadminaccounts' -SecurityEnabled:$true -GroupTypes @()
+foreach ($a in 'adm-helpdesk','adm-useradmin','adm-exchange','adm-secops','adm-soc') {
+  $u = Get-MgUser -Filter "userPrincipalName eq '$a@jon-maillab.org'"
+  New-MgGroupMember -GroupId $g.Id -DirectoryObjectId $u.Id
+}
+
+# 2. Add the group to CA002, keeping the roles and the exclusion
+$p = Get-MgIdentityConditionalAccessPolicy -All | Where-Object DisplayName -eq 'CA002-Require-MFA-Admins'
+$users = @{
+  includeRoles  = @($p.Conditions.Users.IncludeRoles)
+  includeGroups = @($g.Id)
+  excludeGroups = @($p.Conditions.Users.ExcludeGroups)
+}
+Update-MgIdentityConditionalAccessPolicy -ConditionalAccessPolicyId $p.Id -BodyParameter @{ conditions = @{ users = $users } }  
+Then issue a new TAP for adm-helpdesk by running: 
+foreach ($u in 'dpatel','mlee','pshah','anguyen','adm-secops','adm-helpdesk') {
+  $tap = New-MgUserAuthenticationTemporaryAccessPassMethod -UserId "$u@jon-maillab.org" -BodyParameter @{ lifetimeInMinutes = 60; isUsableOnce = $false }
+  [pscustomobject]@{ User = $u; TAP = $tap.TemporaryAccessPass }
+} 
+And sign in on entra.microsoft.com and then go check the logs:  
+![More](./images/more.png)  
+Since it still isn't working check the policy stuff by running: 
+![Status1](./images/status1.png) 
+The dump shows the IncludeUsers as empty, fix CA001 by running: 
+$p = Get-MgIdentityConditionalAccessPolicy -All | Where-Object DisplayName -eq 'CA001-Require-MFA-AllUsers'
+Update-MgIdentityConditionalAccessPolicy -ConditionalAccessPolicyId $p.Id -BodyParameter @{
+  conditions = @{ users = @{ includeUsers = @('All'); includeGroups = @(); excludeGroups = @('b2df6909-276d-417d-b7b9-ddfbf26b7f00') } }
+} 
+And check the other policies too: 
+![Status2](./images/status2.png)  
+Fix it by running:  
+$excl = (Get-MgGroup -Filter "displayName eq 'SG-CA-Exclusions'").Id
+$p = Get-MgIdentityConditionalAccessPolicy -All | Where-Object DisplayName -eq 'CA001-Require-MFA-AllUsers'
+Update-MgIdentityConditionalAccessPolicy -ConditionalAccessPolicyId $p.Id -BodyParameter @{
+  conditions = @{ users = @{ includeUsers = @('All'); includeGroups = @(); excludeGroups = @($excl) } }
+} 
+And verifying from here:  
+![Status3](./images/status3.png)  
+With that all are now correct

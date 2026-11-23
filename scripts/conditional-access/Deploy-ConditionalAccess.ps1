@@ -11,6 +11,9 @@
     CA005  Sign-in risk medium+ requires MFA          (-IncludeRiskPolicies, Entra ID P2)
     CA006  User risk high requires password change    (-IncludeRiskPolicies, Entra ID P2)
 
+    CA002 targets admin ROLES and the SG-Admin-Accounts group: role targeting alone did not cover an
+    administrative-unit-scoped Helpdesk Administrator in testing.
+
     Safety:
       * Break-glass accounts are put in an exclusion group that every policy excludes.
       * Policies that already exist (by display name) are left alone.
@@ -28,6 +31,8 @@
 param(
     [Parameter(Mandatory)][string[]]$BreakGlassUpn,
     [string]$ExclusionGroupName = 'SG-CA-Exclusions',
+    [string]$AdminGroupName = 'SG-Admin-Accounts',
+    [string[]]$AdminAccountUpn = @(),   # all admin accounts EXCEPT break-glass; CA002 targets this group as well as roles
     [string[]]$AllowedCountries = @('US'),
     [ValidateSet('enabledForReportingButNotEnforced', 'disabled', 'enabled')]
     [string]$State = 'enabledForReportingButNotEnforced',
@@ -71,6 +76,28 @@ if ($group) {
 }
 $excludeGroupId = if ($group) { $group.Id } else { '00000000-0000-0000-0000-000000000000' }  # placeholder in -WhatIf only
 
+# ---- 1b. Admin accounts group (role targeting alone misses administrative-unit-scoped admins)
+$adminGroup = Get-MgGroup -Filter "displayName eq '$AdminGroupName'" -ErrorAction SilentlyContinue | Select-Object -First 1
+if (-not $adminGroup -and $PSCmdlet.ShouldProcess($AdminGroupName, 'Create admin accounts group')) {
+    $adminGroup = New-MgGroup -DisplayName $AdminGroupName -Description 'All admin accounts (CA002 targets this group in addition to roles). Never add break-glass accounts.' `\
+        -MailEnabled:$false -MailNickname (($AdminGroupName -replace '[^A-Za-z0-9]', '').ToLower()) -SecurityEnabled:$true -GroupTypes @()
+    Write-LabLog "Created $AdminGroupName ($($adminGroup.Id))" ACTION
+}
+if ($adminGroup) {
+    $adminCurrent = @(Get-MgGroupMember -GroupId $adminGroup.Id -All | ForEach-Object Id)
+    foreach ($upn in $AdminAccountUpn) {
+        if ($upn -in $BreakGlassUpn) { Write-LabLog "Refusing to add break-glass account $upn to $AdminGroupName" WARN; continue }
+        $au = Get-MgUser -Filter "userPrincipalName eq '$upn'" -ErrorAction SilentlyContinue
+        if (-not $au) { Write-LabLog "Admin account $upn not found" WARN; continue }
+        if ($adminCurrent -contains $au.Id) { continue }
+        if ($PSCmdlet.ShouldProcess($upn, "Add to $AdminGroupName")) {
+            New-MgGroupMember -GroupId $adminGroup.Id -DirectoryObjectId $au.Id
+            Write-LabLog "Added $upn to $AdminGroupName" ACTION
+        }
+    }
+}
+$adminGroupId = if ($adminGroup) { $adminGroup.Id } else { '00000000-0000-0000-0000-000000000000' }  # placeholder in -WhatIf only
+
 # ---- 2. Named location for allowed countries
 $nlName = 'NL-Allowed-Countries'
 $nl = Get-MgIdentityConditionalAccessNamedLocation -All | Where-Object { $_.DisplayName -eq $nlName }
@@ -102,7 +129,7 @@ $policies = [ordered]@{
         grantControls = @{ operator = 'OR'; builtInControls = @('mfa') }
     }
     'CA002-Require-MFA-Admins' = @{
-        conditions    = @{ users = @{ includeRoles = @($adminRoleIds); excludeGroups = @($excludeGroupId) }; applications = $allApps; clientAppTypes = @('all') }
+        conditions    = @{ users = @{ includeRoles = @($adminRoleIds); includeGroups = @($adminGroupId); excludeGroups = @($excludeGroupId) }; applications = $allApps; clientAppTypes = @('all') }
         grantControls = @{ operator = 'OR'; builtInControls = @('mfa') }
     }
     'CA003-Block-Legacy-Auth' = @{
@@ -126,17 +153,47 @@ if ($IncludeRiskPolicies) {
     }
 }
 
-# ---- 5. Create
-$existingNames = @(Get-MgIdentityConditionalAccessPolicy -All | ForEach-Object { $_.DisplayName })
+# ---- 5. Create (or re-check) and READ BACK what the tenant actually stored
+function Test-PolicyShape {
+    param([string]$PolicyId, [string]$Name, [hashtable]$ExpectedUsers)
+    $actual = Get-MgIdentityConditionalAccessPolicy -ConditionalAccessPolicyId $PolicyId
+    $ok = $true
+    foreach ($k in 'IncludeUsers', 'IncludeGroups', 'IncludeRoles', 'ExcludeGroups') {
+        $key = $k.Substring(0, 1).ToLower() + $k.Substring(1)
+        $exp = @(@($ExpectedUsers[$key]) | Where-Object { $_ } | Sort-Object)
+        $act = @(@($actual.Conditions.Users.$k) | Where-Object { $_ } | Sort-Object)
+        if (($exp -join ',') -ne ($act -join ',')) {
+            Write-LabLog "DRIFT in ${Name}: $k expected [$($exp -join ',')] but tenant has [$($act -join ',')]" ERROR
+            $ok = $false
+        }
+    }
+    if ($ok) { Write-LabLog "Verified $Name (users conditions match the intended definition)" }
+    return $ok
+}
+
+$existing = @(Get-MgIdentityConditionalAccessPolicy -All)
+$failures = 0
 foreach ($name in $policies.Keys) {
-    if ($existingNames -contains $name) { Write-LabLog "Exists, leaving unchanged: $name"; continue }
+    $found = $existing | Where-Object { $_.DisplayName -eq $name } | Select-Object -First 1
+    $expectedUsers = $policies[$name].conditions.users
+    if ($found) {
+        Write-LabLog "Exists, leaving unchanged: $name"
+        if (-not $WhatIfPreference -and -not (Test-PolicyShape -PolicyId $found.Id -Name $name -ExpectedUsers $expectedUsers)) { $failures++ }
+        continue
+    }
     $body = $policies[$name] + @{ displayName = $name; state = $State }
     if ($PSCmdlet.ShouldProcess($name, "Create policy (state: $State)")) {
         try {
             $p = New-MgIdentityConditionalAccessPolicy -BodyParameter $body
             Write-LabLog "Created $name ($($p.Id)) state=$State" ACTION
-        } catch { Write-LabLog "Failed to create ${name}: $($_.Exception.Message)" ERROR }
+            if (-not (Test-PolicyShape -PolicyId $p.Id -Name $name -ExpectedUsers $expectedUsers)) { $failures++ }
+        } catch { Write-LabLog "Failed to create ${name}: $($_.Exception.Message)" ERROR; $failures++ }
     } else { Write-LabLog "Would create $name (state: $State)" WHATIF }
 }
 
+if ($failures -gt 0) {
+    Write-LabLog "$failures policy/policies do NOT match the intended definition. Do not enforce anything until fixed." ERROR
+} elseif (-not $WhatIfPreference) {
+    Write-LabLog 'All policy user conditions verified against the intended definitions.' ACTION
+}
 Write-LabLog 'Next: review Sign-in logs > Report-only tab and the What If tool, record expected vs actual, then enforce CA003, CA002, CA001 in that order.'
