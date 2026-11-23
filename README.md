@@ -72,3 +72,25 @@ Then check with ecross by running:
 ![Ran](./images/ran.png)    
 
 # Access
+First after adding Claude generated New-LabAccessModel.ps1 do a test run with .\scripts\groups\New-LabAccessModel.ps1 -Domain jon-maillab.org -CreateBreakGlass -BreakGlassDomain patchlab26.onmicrosoft.com -WhatIf to see if a test run works.    
+And make sure to run: Connect-MgGraph -NoWelcome -Scopes User.ReadWrite.All,Group.ReadWrite.All,Directory.ReadWrite.All,RoleManagement.ReadWrite.Directory,Policy.ReadWrite.ConditionalAccess,Policy.Read.All,Application.Read.All,UserAuthenticationMethod.ReadWrite.All,IdentityRiskyUser.ReadWrite.All,AuditLog.Read.All,DelegatedPermissionGrant.ReadWrite.All,User-PasswordProfile.ReadWrite.All,AdministrativeUnit.ReadWrite.All,RoleEligibilitySchedule.ReadWrite.Directory just in case PowerShell was signed out of.   
+After running:  
+![Test1](./images/test1.png)    
+Since it worked, run without -WhatIf.   
+![Test2](./images/test2.png)    
+Since 2 break glass accounts were created, sign in as one of them to confirm they work. 
+After sigining as one:  
+![Sign](./images/sign.png)  
+Then run this command to assign licenses:   
+![Command](./images/command.png)    
+After verifying that the script worked, verify it with: 
+'adm-helpdesk','adm-useradmin','adm-exchange','adm-secops','adm-soc' | ForEach-Object {
+  Get-MgUserLicenseDetail -UserId "$_@jon-maillab.org" | Select-Object @{n='User';e={$_}}, SkuPartNumber
+}   
+Its time to move on to Conditional access with a What-if Test run with: 
+.\scripts\conditional-access\Deploy-ConditionalAccess.ps1 -BreakGlassUpn bg-admin1@patchlab26.onmicrosoft.com,bg-admin2@patchlab26.onmicrosoft.com -IncludeRiskPolicies -WhatIf:    
+![Access](./images/access.png)  
+Then live without -WhatIf.  
+![Live](./images/live.png)  
+Since its read only go to the Entra admin center -> Conditional Access -> Policies and they should be there:    
+![Policy](./images/policy.png)  

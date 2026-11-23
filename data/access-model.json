@@ -1,0 +1,23 @@
+{
+  "groups": [
+    { "name": "SG-FinanceShare-RW", "description": "Read/write on the Finance file share", "nested": ["DG-Finance"] },
+    { "name": "SG-HRFiles-RW",      "description": "Read/write on HR confidential files", "nested": ["DG-HR"] },
+    { "name": "SG-ITTools-Admins",  "description": "Access to IT admin tooling",          "nested": ["DG-IT"] },
+    { "name": "SG-VPN-Users",       "description": "Allowed to use the VPN",              "nested": ["DG-Finance", "DG-Sales", "DG-Operations", "DG-IT", "DG-HR", "DG-Executive"] },
+    { "name": "SG-Executives",      "description": "Executive leadership (scopes Strict protection and CA targeting)", "nested": ["DG-Executive"] }
+  ],
+  "roleAssignableGroups": [
+    { "name": "RG-SecurityOps", "description": "Security operations analysts (role-assignable)",
+      "roles": ["Security Reader"], "members": ["adm-soc"] }
+  ],
+  "administrativeUnits": [
+    { "name": "AU-Finance", "description": "Finance department users", "department": "Finance" }
+  ],
+  "adminAccounts": [
+    { "alias": "adm-helpdesk",  "displayName": "Admin Helpdesk (Finance only)", "role": "Helpdesk Administrator", "scopeAU": "AU-Finance" },
+    { "alias": "adm-useradmin", "displayName": "Admin User Administrator",      "role": "User Administrator" },
+    { "alias": "adm-exchange",  "displayName": "Admin Exchange",                "role": "Exchange Administrator" },
+    { "alias": "adm-secops",    "displayName": "Admin Security Operations",     "role": "Security Administrator" },
+    { "alias": "adm-soc",       "displayName": "Admin SOC Analyst",             "role": null, "viaGroup": "RG-SecurityOps" }
+  ]
+}

@@ -1,0 +1,18 @@
+2026-11-23T00:13:22Z [WHATIF] [gator] Would create CA001-Require-MFA-AllUsers (state: enabledForReportingButNotEnforced)
+2026-11-23T00:13:22Z [WHATIF] [gator] Would create CA002-Require-MFA-Admins (state: enabledForReportingButNotEnforced)
+2026-11-23T00:13:22Z [WHATIF] [gator] Would create CA003-Block-Legacy-Auth (state: enabledForReportingButNotEnforced)
+2026-11-23T00:13:22Z [WHATIF] [gator] Would create CA004-Block-Untrusted-Countries (state: enabledForReportingButNotEnforced)
+2026-11-23T00:13:22Z [WHATIF] [gator] Would create CA005-SignInRisk-Medium-Require-MFA (state: enabledForReportingButNotEnforced)
+2026-11-23T00:13:22Z [WHATIF] [gator] Would create CA006-UserRisk-High-Password-Change (state: enabledForReportingButNotEnforced)
+2026-11-23T00:13:22Z [INFO] [gator] Next: review Sign-in logs > Report-only tab and the What If tool, record expected vs actual, then enforce CA003, CA002, CA001 in that order.
+2026-11-23T00:14:29Z [ACTION] [gator] Created SG-CA-Exclusions (b2df6909-276d-417d-b7d9-ddfbf26b7f00)
+2026-11-23T00:14:30Z [ACTION] [gator] Added bg-admin1@patchlab26.onmicrosoft.com to SG-CA-Exclusions
+2026-11-23T00:14:30Z [ACTION] [gator] Added bg-admin2@patchlab26.onmicrosoft.com to SG-CA-Exclusions
+2026-11-23T00:14:31Z [ACTION] [gator] Created named location NL-Allowed-Countries
+2026-11-23T00:14:34Z [ACTION] [gator] Created CA001-Require-MFA-AllUsers (a4a7866b-b3ae-47ae-8c37-879037e41071) state=enabledForReportingButNotEnforced
+2026-11-23T00:14:34Z [ACTION] [gator] Created CA002-Require-MFA-Admins (20725a57-fbb2-4626-a08f-5d81bf7d0a54) state=enabledForReportingButNotEnforced
+2026-11-23T00:14:36Z [ACTION] [gator] Created CA003-Block-Legacy-Auth (74307a0c-d1c9-4c89-a001-e9500be01550) state=enabledForReportingButNotEnforced
+2026-11-23T00:14:37Z [ACTION] [gator] Created CA004-Block-Untrusted-Countries (32f80193-6199-466e-80ed-bf1d0aaa559f) state=enabledForReportingButNotEnforced
+2026-11-23T00:14:37Z [ACTION] [gator] Created CA005-SignInRisk-Medium-Require-MFA (b71dfa8b-4312-4bcb-9110-e7603904ca59) state=enabledForReportingButNotEnforced
+2026-11-23T00:14:39Z [ACTION] [gator] Created CA006-UserRisk-High-Password-Change (6d59d8c6-ba9b-49b3-ab90-038399b1fb3a) state=enabledForReportingButNotEnforced
+2026-11-23T00:14:39Z [INFO] [gator] Next: review Sign-in logs > Report-only tab and the What If tool, record expected vs actual, then enforce CA003, CA002, CA001 in that order.

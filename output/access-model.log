@@ -1,0 +1,54 @@
+2026-11-22T23:54:21Z [WHATIF] [gator] Would create adm-helpdesk@jon-maillab.org
+2026-11-22T23:54:21Z [WHATIF] [gator] Would create adm-useradmin@jon-maillab.org
+2026-11-22T23:54:21Z [WHATIF] [gator] Would create adm-exchange@jon-maillab.org
+2026-11-22T23:54:21Z [WHATIF] [gator] Would create adm-secops@jon-maillab.org
+2026-11-22T23:54:21Z [WHATIF] [gator] Would create adm-soc@jon-maillab.org
+2026-11-22T23:54:25Z [WHATIF] [gator] Would create group SG-FinanceShare-RW
+2026-11-22T23:54:25Z [WHATIF] [gator] Would create group SG-HRFiles-RW
+2026-11-22T23:54:26Z [WHATIF] [gator] Would create group SG-ITTools-Admins
+2026-11-22T23:54:26Z [WHATIF] [gator] Would create group SG-VPN-Users
+2026-11-22T23:54:26Z [WHATIF] [gator] Would create group SG-Executives
+2026-11-22T23:54:31Z [WHATIF] [gator] Would create administrative unit AU-Finance
+2026-11-22T23:54:31Z [WHATIF] [gator] Would create group RG-SecurityOps
+2026-11-22T23:54:31Z [WHATIF] [gator] Would create bg-admin1@patchlab26.onmicrosoft.com
+2026-11-22T23:54:31Z [WHATIF] [gator] Would create bg-admin2@patchlab26.onmicrosoft.com
+2026-11-22T23:54:31Z [INFO] [gator] Role matrix written to C:\Users\gator\microsoft-365-enterprise-admin-lab\scripts\groups\..\..\output\role-matrix.csv
+2026-11-22T23:54:31Z [INFO] [gator] Access model complete. Next: PIM policies, boundary tests, then Day 3 (Conditional Access).
+2026-11-22T23:56:16Z [ACTION] [gator] Created Admin account adm-helpdesk@jon-maillab.org (unlicensed, cloud-only)
+2026-11-22T23:56:17Z [ACTION] [gator] Created Admin account adm-useradmin@jon-maillab.org (unlicensed, cloud-only)
+2026-11-22T23:56:18Z [ACTION] [gator] Created Admin account adm-exchange@jon-maillab.org (unlicensed, cloud-only)
+2026-11-22T23:56:18Z [ACTION] [gator] Created Admin account adm-secops@jon-maillab.org (unlicensed, cloud-only)
+2026-11-22T23:56:19Z [ACTION] [gator] Created Admin account adm-soc@jon-maillab.org (unlicensed, cloud-only)
+2026-11-22T23:56:19Z [ACTION] [gator] Created group SG-FinanceShare-RW
+2026-11-22T23:56:20Z [ACTION] [gator] Added DG-Finance to SG-FinanceShare-RW
+2026-11-22T23:56:21Z [ACTION] [gator] Created group SG-HRFiles-RW
+2026-11-22T23:56:21Z [ACTION] [gator] Added DG-HR to SG-HRFiles-RW
+2026-11-22T23:56:22Z [ACTION] [gator] Created group SG-ITTools-Admins
+2026-11-22T23:56:22Z [ACTION] [gator] Added DG-IT to SG-ITTools-Admins
+2026-11-22T23:56:23Z [ACTION] [gator] Created group SG-VPN-Users
+2026-11-22T23:56:23Z [ACTION] [gator] Added DG-Finance to SG-VPN-Users
+2026-11-22T23:56:24Z [ACTION] [gator] Added DG-Sales to SG-VPN-Users
+2026-11-22T23:56:25Z [ACTION] [gator] Added DG-Operations to SG-VPN-Users
+2026-11-22T23:56:25Z [ACTION] [gator] Added DG-IT to SG-VPN-Users
+2026-11-22T23:56:26Z [ACTION] [gator] Added DG-HR to SG-VPN-Users
+2026-11-22T23:56:27Z [ACTION] [gator] Added DG-Executive to SG-VPN-Users
+2026-11-22T23:56:27Z [ACTION] [gator] Created group SG-Executives
+2026-11-22T23:56:28Z [ACTION] [gator] Added DG-Executive to SG-Executives
+2026-11-22T23:56:29Z [ACTION] [gator] Created administrative unit AU-Finance
+2026-11-22T23:56:29Z [ACTION] [gator] Added anguyen@jon-maillab.org to AU-Finance
+2026-11-22T23:56:30Z [ACTION] [gator] Added dpatel@jon-maillab.org to AU-Finance
+2026-11-22T23:56:30Z [ACTION] [gator] Added lchen@jon-maillab.org to AU-Finance
+2026-11-22T23:56:31Z [ACTION] [gator] Created group RG-SecurityOps (role-assignable)
+2026-11-22T23:56:49Z [ACTION] [gator] Assigned Security Reader to RG-SecurityOps (Active, Tenant)
+2026-11-22T23:56:50Z [ACTION] [gator] Added adm-soc@jon-maillab.org to RG-SecurityOps
+2026-11-22T23:56:51Z [ACTION] [gator] Assigned Helpdesk Administrator to adm-helpdesk@jon-maillab.org (Active, AU-Finance)
+2026-11-22T23:56:52Z [ACTION] [gator] Assigned User Administrator to adm-useradmin@jon-maillab.org (Active, Tenant)
+2026-11-22T23:56:53Z [ACTION] [gator] Assigned Exchange Administrator to adm-exchange@jon-maillab.org (Active, Tenant)
+2026-11-22T23:56:54Z [ACTION] [gator] Assigned Security Administrator to adm-secops@jon-maillab.org (Active, Tenant)
+2026-11-22T23:56:54Z [ACTION] [gator] Created BreakGlass account bg-admin1@patchlab26.onmicrosoft.com (unlicensed, cloud-only)
+2026-11-22T23:56:55Z [ACTION] [gator] Assigned Global Administrator to bg-admin1@patchlab26.onmicrosoft.com (Active, Tenant)
+2026-11-22T23:56:56Z [ACTION] [gator] Created BreakGlass account bg-admin2@patchlab26.onmicrosoft.com (unlicensed, cloud-only)
+2026-11-22T23:56:56Z [ACTION] [gator] Assigned Global Administrator to bg-admin2@patchlab26.onmicrosoft.com (Active, Tenant)
+2026-11-22T23:56:56Z [WARN] [gator] Admin initial passwords written to C:\Users\gator\microsoft-365-enterprise-admin-lab\scripts\groups\..\..\output\admin-initial-passwords.csv (gitignored). Delete after first sign-in.
+2026-11-22T23:56:56Z [INFO] [gator] Role matrix written to C:\Users\gator\microsoft-365-enterprise-admin-lab\scripts\groups\..\..\output\role-matrix.csv
+2026-11-22T23:56:56Z [INFO] [gator] Access model complete. Next: PIM policies, boundary tests, then Day 3 (Conditional Access).
