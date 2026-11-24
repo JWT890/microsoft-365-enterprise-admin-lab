@@ -16,3 +16,43 @@
 2026-11-23T00:14:37Z [ACTION] [gator] Created CA005-SignInRisk-Medium-Require-MFA (b71dfa8b-4312-4bcb-9110-e7603904ca59) state=enabledForReportingButNotEnforced
 2026-11-23T00:14:39Z [ACTION] [gator] Created CA006-UserRisk-High-Password-Change (6d59d8c6-ba9b-49b3-ab90-038399b1fb3a) state=enabledForReportingButNotEnforced
 2026-11-23T00:14:39Z [INFO] [gator] Next: review Sign-in logs > Report-only tab and the What If tool, record expected vs actual, then enforce CA003, CA002, CA001 in that order.
+2026-11-24T01:16:46Z [INFO] [gator] Exists, leaving unchanged: CA001-Require-MFA-AllUsers
+2026-11-24T01:16:46Z [INFO] [gator] Exists, leaving unchanged: CA002-Require-MFA-Admins
+2026-11-24T01:16:46Z [INFO] [gator] Exists, leaving unchanged: CA003-Block-Legacy-Auth
+2026-11-24T01:16:46Z [INFO] [gator] Exists, leaving unchanged: CA004-Block-Untrusted-Countries
+2026-11-24T01:16:46Z [INFO] [gator] Exists, leaving unchanged: CA005-SignInRisk-Medium-Require-MFA
+2026-11-24T01:16:46Z [INFO] [gator] Exists, leaving unchanged: CA006-UserRisk-High-Password-Change
+2026-11-24T01:16:46Z [INFO] [gator] Next: review Sign-in logs > Report-only tab and the What If tool, record expected vs actual, then enforce CA003, CA002, CA001 in that order.
+2026-11-24T01:23:02Z [ACTION] [gator] Added adm-helpdesk@jon-maillab.org to SG-Admin-Accounts
+2026-11-24T01:23:02Z [ACTION] [gator] Added adm-useradmin@jon-maillab.org to SG-Admin-Accounts
+2026-11-24T01:23:02Z [ACTION] [gator] Added adm-exchange@jon-maillab.org to SG-Admin-Accounts
+2026-11-24T01:23:03Z [ACTION] [gator] Added adm-secops@jon-maillab.org to SG-Admin-Accounts
+2026-11-24T01:23:03Z [ACTION] [gator] Added adm-soc@jon-maillab.org to SG-Admin-Accounts
+2026-11-24T01:23:05Z [INFO] [gator] Exists, leaving unchanged: CA001-Require-MFA-AllUsers
+2026-11-24T01:23:05Z [INFO] [gator] Verified CA001-Require-MFA-AllUsers (users conditions match the intended definition)
+2026-11-24T01:23:05Z [INFO] [gator] Exists, leaving unchanged: CA002-Require-MFA-Admins
+2026-11-24T01:23:05Z [ERROR] [gator] DRIFT in CA002-Require-MFA-Admins: IncludeGroups expected [b511f306-fc43-4caf-b32d-8ea20d2487df] but tenant has [3c7f8bc7-bf0a-49be-b591-a75ca616b422]
+2026-11-24T01:23:05Z [INFO] [gator] Exists, leaving unchanged: CA003-Block-Legacy-Auth
+2026-11-24T01:23:06Z [INFO] [gator] Verified CA003-Block-Legacy-Auth (users conditions match the intended definition)
+2026-11-24T01:23:06Z [INFO] [gator] Exists, leaving unchanged: CA004-Block-Untrusted-Countries
+2026-11-24T01:23:06Z [INFO] [gator] Verified CA004-Block-Untrusted-Countries (users conditions match the intended definition)
+2026-11-24T01:23:06Z [INFO] [gator] Exists, leaving unchanged: CA005-SignInRisk-Medium-Require-MFA
+2026-11-24T01:23:06Z [INFO] [gator] Verified CA005-SignInRisk-Medium-Require-MFA (users conditions match the intended definition)
+2026-11-24T01:23:06Z [INFO] [gator] Exists, leaving unchanged: CA006-UserRisk-High-Password-Change
+2026-11-24T01:23:07Z [INFO] [gator] Verified CA006-UserRisk-High-Password-Change (users conditions match the intended definition)
+2026-11-24T01:23:07Z [ERROR] [gator] 1 policy/policies do NOT match the intended definition. Do not enforce anything until fixed.
+2026-11-24T01:23:07Z [INFO] [gator] Next: review Sign-in logs > Report-only tab and the What If tool, record expected vs actual, then enforce CA003, CA002, CA001 in that order.
+2026-11-24T01:35:20Z [INFO] [gator] Exists, leaving unchanged: CA001-Require-MFA-AllUsers
+2026-11-24T01:35:21Z [INFO] [gator] Verified CA001-Require-MFA-AllUsers (users conditions match the intended definition)
+2026-11-24T01:35:21Z [INFO] [gator] Exists, leaving unchanged: CA002-Require-MFA-Admins
+2026-11-24T01:35:21Z [INFO] [gator] Verified CA002-Require-MFA-Admins (users conditions match the intended definition)
+2026-11-24T01:35:21Z [INFO] [gator] Exists, leaving unchanged: CA003-Block-Legacy-Auth
+2026-11-24T01:35:21Z [INFO] [gator] Verified CA003-Block-Legacy-Auth (users conditions match the intended definition)
+2026-11-24T01:35:21Z [INFO] [gator] Exists, leaving unchanged: CA004-Block-Untrusted-Countries
+2026-11-24T01:35:21Z [INFO] [gator] Verified CA004-Block-Untrusted-Countries (users conditions match the intended definition)
+2026-11-24T01:35:21Z [INFO] [gator] Exists, leaving unchanged: CA005-SignInRisk-Medium-Require-MFA
+2026-11-24T01:35:22Z [INFO] [gator] Verified CA005-SignInRisk-Medium-Require-MFA (users conditions match the intended definition)
+2026-11-24T01:35:22Z [INFO] [gator] Exists, leaving unchanged: CA006-UserRisk-High-Password-Change
+2026-11-24T01:35:22Z [INFO] [gator] Verified CA006-UserRisk-High-Password-Change (users conditions match the intended definition)
+2026-11-24T01:35:22Z [ACTION] [gator] All policy user conditions verified against the intended definitions.
+2026-11-24T01:35:22Z [INFO] [gator] Next: review Sign-in logs > Report-only tab and the What If tool, record expected vs actual, then enforce CA003, CA002, CA001 in that order.

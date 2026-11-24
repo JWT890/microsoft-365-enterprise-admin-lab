@@ -55,7 +55,9 @@ if ($State -eq 'enabled' -and -not $WhatIfPreference) {
 }
 
 # ---- 1. Exclusion group containing the break-glass accounts
-$group = Get-MgGroup -Filter "displayName eq '$ExclusionGroupName'" -ErrorAction SilentlyContinue
+$groupMatches = @(Get-MgGroup -Filter "displayName eq '$ExclusionGroupName'" -ErrorAction SilentlyContinue)
+if ($groupMatches.Count -gt 1) { throw "Found $($groupMatches.Count) groups named '$ExclusionGroupName' (IDs: $($groupMatches.Id -join ', ')). Delete the duplicates first: a policy must never exclude the wrong group." }
+$group = $groupMatches | Select-Object -First 1
 if (-not $group) {
     if ($PSCmdlet.ShouldProcess($ExclusionGroupName, 'Create exclusion group')) {
         $group = New-MgGroup -DisplayName $ExclusionGroupName -MailEnabled:$false -MailNickname ($ExclusionGroupName -replace '[^A-Za-z0-9]', '').ToLower() -SecurityEnabled:$true -GroupTypes @()
@@ -77,7 +79,9 @@ if ($group) {
 $excludeGroupId = if ($group) { $group.Id } else { '00000000-0000-0000-0000-000000000000' }  # placeholder in -WhatIf only
 
 # ---- 1b. Admin accounts group (role targeting alone misses administrative-unit-scoped admins)
-$adminGroup = Get-MgGroup -Filter "displayName eq '$AdminGroupName'" -ErrorAction SilentlyContinue | Select-Object -First 1
+$adminMatches = @(Get-MgGroup -Filter "displayName eq '$AdminGroupName'" -ErrorAction SilentlyContinue)
+if ($adminMatches.Count -gt 1) { throw "Found $($adminMatches.Count) groups named '$AdminGroupName' (IDs: $($adminMatches.Id -join ', ')). Delete the duplicates first." }
+$adminGroup = $adminMatches | Select-Object -First 1
 if (-not $adminGroup -and $PSCmdlet.ShouldProcess($AdminGroupName, 'Create admin accounts group')) {
     $adminGroup = New-MgGroup -DisplayName $AdminGroupName -Description 'All admin accounts (CA002 targets this group in addition to roles). Never add break-glass accounts.' `\
         -MailEnabled:$false -MailNickname (($AdminGroupName -replace '[^A-Za-z0-9]', '').ToLower()) -SecurityEnabled:$true -GroupTypes @()

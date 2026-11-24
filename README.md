@@ -124,14 +124,14 @@ Then sign as another adm account, such as adm-secops since last was adm-helpdesk
 With CA001 it shows not applied for all users since its a regular member, lets check one of adm-helpdesk's logs:    
 ![Scope](./images/scope.png)    
 From looking over this, adm-helpdesk is not covered by CA002 with the cause being the role doesn't pick up admin assignments, so run this:  
-# 1. Group of all admin accounts
+Group of all admin accounts
 $g = New-MgGroup -DisplayName 'SG-Admin-Accounts' -Description 'All admin accounts (CA002 targets this in addition to roles)' -MailEnabled:$false -MailNickname 'sgadminaccounts' -SecurityEnabled:$true -GroupTypes @()
 foreach ($a in 'adm-helpdesk','adm-useradmin','adm-exchange','adm-secops','adm-soc') {
   $u = Get-MgUser -Filter "userPrincipalName eq '$a@jon-maillab.org'"
   New-MgGroupMember -GroupId $g.Id -DirectoryObjectId $u.Id
 }
 
-# 2. Add the group to CA002, keeping the roles and the exclusion
+Add the group to CA002, keeping the roles and the exclusion
 $p = Get-MgIdentityConditionalAccessPolicy -All | Where-Object DisplayName -eq 'CA002-Require-MFA-Admins'
 $users = @{
   includeRoles  = @($p.Conditions.Users.IncludeRoles)
@@ -163,4 +163,67 @@ Update-MgIdentityConditionalAccessPolicy -ConditionalAccessPolicyId $p.Id -BodyP
 } 
 And verifying from here:  
 ![Status3](./images/status3.png)  
-With that all are now correct
+With that all are now correct time to rerun conditional access with this script with -WhatIf: 
+.\scripts\conditional-access\Deploy-ConditionalAccess.ps1 -BreakGlassUpn bg-admin1@patchlab26.onmicrosoft.com,bg-admin2@patchlab26.onmicrosoft.com -AdminAccountUpn adm-helpdesk@jon-maillab.org,adm-useradmin@jon-maillab.org,adm-exchange@jon-maillab.org,adm-secops@jon-maillab.org,adm-soc@jon-maillab.org -IncludeRiskPolicies -WhatIf. Should result: 
+![Scope1](./images/scope1.png)  
+Then run without what if but see a mismatch or some dups:  
+![Mismatch](./images/mismatch.png)  
+Since its complaining about duplicates run: 
+Get-MgGroup -Filter "displayName eq 'SG-Admin-Accounts'" | ForEach-Object {
+  [pscustomobject]@{ Id = $_.Id; Created = $_.CreatedDateTime; Members = @(Get-MgGroupMember -GroupId $_.Id -All).Count }
+} 
+Which should show the dups: 
+![Dup](./images/dup.png)  
+To delete run this in sequence: 
+$keep = '3c7f8bc7-bf0a-49be-b591-a75ca616b422'
+$extras = Get-MgGroup -Filter "displayName eq 'SG-Admin-Accounts'" | Where-Object Id -ne $keep
+$policies = Get-MgIdentityConditionalAccessPolicy -All
+
+foreach ($g in $extras) {
+  $used = $policies | Where-Object {
+    $_.Conditions.Users.IncludeGroups -contains $g.Id -or $_.Conditions.Users.ExcludeGroups -contains $g.Id
+  }
+  if ($used) { Write-Warning "SKIPPING $($g.Id): used by $($used.DisplayName -join ', ')"; continue }
+  Remove-MgGroup -GroupId $g.Id
+  Write-Host "Deleted duplicate $($g.Id)"
+}
+
+Get-MgGroup -Filter "displayName eq 'SG-Admin-Accounts'" | Select-Object Id, DisplayName  
+Which should keep the specific id, filters to see whether the SG group has more dups and checks the policies for extras and deletes the dups and run the commands from this:  
+![Commmand1](./images/command1.png) 
+Which should show only one version and verifies the users within the group and then rerun the Deploy-ConditionalAccess.ps1 script once again: 
+![Script1](./images/script1.png)  
+Which should verify now with the green indicator, then go verify with bg-admin1, dpatel and adm-helpdesk. After getting the new TAPs by running:  
+foreach ($u in 'dpatel','adm-helpdesk') {
+  $tap = New-MgUserAuthenticationTemporaryAccessPassMethod -UserId "$u@jon-maillab.org" -BodyParameter @{ lifetimeInMinutes = 60; isUsableOnce = $false }
+  [pscustomobject]@{ User = $u; TAP = $tap.TemporaryAccessPass }
+} 
+For bg-admin1:  
+![Test3](./images/test3.png)  
+For Dev Patel:  
+![Dev](./images/dev.png)  
+With it showing CA001 as a success. 
+For adm-helpdesk: 
+![Adm](./images/adm.png)  
+Since adm is success for CA001 and not for 2, check the group and policy by running:  
+$keep = '3c7f8bc7-bf0a-49be-b591-a75ca616b422'
+Get-MgGroupMember -GroupId $keep | ForEach-Object { $_.AdditionalProperties['userPrincipalName'] }
+(Get-MgIdentityConditionalAccessPolicy -All | Where-Object DisplayName -eq 'CA002-Require-MFA-Admins').Conditions.Users | Select-Object IncludeGroups, ExcludeGroups  
+ANd result: 
+![Info](./images/info.png)  
+Then wait a couple minutes and should see it update:  
+![Update](./images/update.png)  
+The enforcement is now complate or at least on track. 
+
+Then its time to move on to configuring DNS and DKIM. 
+Start by getting the Microsoft records by running:  
+Get-MgDomainServiceConfigurationRecord -DomainId jon-maillab.org |
+  Select-Object RecordType, Label, Text, MailExchange, CanonicalName, Ttl | Format-List 
+And since it will likely error message about privileges go to -> Settings -> Domains -> jon-maillab.org -> DNS records and verify it has the correct configurations.  
+Then go to Cloudflare and go to the domain's DNS records and turn off email routing if its there or on. 
+Then its time to create a shared mailbox by running:  
+New-Mailbox -Shared -Name "SecOps Alerts" -PrimarySmtpAddress secops-alerts@jon-maillab.org
+Add-MailboxPermission -Identity secops-alerts@jon-maillab.org -User <your admin UPN> -AccessRights FullAccess -AutoMapping $true  
+And the result: 
+![Mail](./images/mail.png)  
+
