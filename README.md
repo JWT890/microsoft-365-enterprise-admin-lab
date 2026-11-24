@@ -226,4 +226,6 @@ New-Mailbox -Shared -Name "SecOps Alerts" -PrimarySmtpAddress secops-alerts@jon-
 Add-MailboxPermission -Identity secops-alerts@jon-maillab.org -User <your admin UPN> -AccessRights FullAccess -AutoMapping $true  
 And the result: 
 ![Mail](./images/mail.png)  
+Then run the following from this screenshot to create DKIM config and check its status: 
+![Ran1](./images/ran1.png)  
 
