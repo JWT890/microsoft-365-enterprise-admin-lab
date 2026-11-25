@@ -228,4 +228,58 @@ And the result:
 ![Mail](./images/mail.png)  
 Then run the following from this screenshot to create DKIM config and check its status: 
 ![Ran1](./images/ran1.png)  
+What the error means is that it already exists, now its time to check the permissions with: 
+Get-MailboxPermission secops-alerts@jon-maillab.org | Where-Object { $_.User -ne 'NT AUTHORITY\SELF' } | Select-Object User, AccessRights 
+![Permissions](./images/permissions.png)  
+And get the DKIM records by running: Get-DkimSigningConfig -Identity jon-maillab.org | Format-List Domain, Enabled, Selector1CNAME, Selector2CNAME  
+![Record](./images/record.png)  
+Then check the DNS names to see if they resolve:  
+Resolve-DnsName selector1._domainkey.jon-maillab.org -Type CNAME  
+Resolve-DnsName selector2._domainkey.jon-maillab.org -Type CNAME  
+Which they should and enable signing afterwards with Set-DkimSigningConfig -Identity jon-maillab.org -Enabled $true, then run a WhatIf for mail protection: 
+.\scripts\security\Deploy-MailProtection.ps1 -Domain jon-maillab.org -SecurityAdminEmail secops-alerts@jon-maillab.org -ProtectedUsers 'Casey Morgan;cmorgan@jon-maillab.org','Jordan Hartley;jhartley@jon-maillab.org' -WhatIf 
+![What](./images/what.png)  
+Without WhatIf: 
+![V](./images/v.png)  
+And verify with the commands from the screenshot: 
+![V1](./images/v1.png)  
+The important ones from the above is threshold of 3, the two C suite protected, autoforwardingmode is off, filefilter and ZAP are on, AllowClickThrough is false and Action: DynamicDelivery is set and all should print enabled. 
+Then check the rule scope from this picture:  
+![Phish](./images/phish.png)  
+And then verify SPF, DMARC, and DKIM like so: 
+![Mail1](./images/mail1.png)
+Then I signed in as Dev Patel and sent an email to myself:  
+![Outbound](./images/outbound-spf-dkim-dmarc-pass-blurred.png)  
+Then run a trace in Exchange and through the command line:  
+![Trace](./images/trace.png)  
+![V2](./images/v2.png)  
+Then do a inbound test to Dev and check in mail and command line: 
+![I](./images/i.png)  
+and in mail:  
+![Result](./images/result.png)  
+From this image it shows as arc=pass which shows intactness.  
+Then its time to do protection tests by sending emails to Dev by doing GTUBE spam, safe links.  
+For GTUBE, i sent:  
+![Tube](./images/tube.png)  
+For Safe Links i sent an email with a link attached which when hovering over it changes to include safelinks. 
+When looking at details for GTUBE spam test:  
+![S](./images/s.png)  
+Shows with SFV:SPM and CAT:SPM which means spam. Then its time to test out auto-forward block by running: 
+Set-Mailbox dpatel@jon-maillab.org -ForwardingSmtpAddress you@gmail.com 
+And send an email internally to Dev and wait a few moments to receive the block:  
+![Block](./images/block.png)  
+This comes up with running Get-HostedOutboundSpamFilterPolicy | Select-Object Name, AutoForwardingMode  
+![Off](./images/off.png)  
+With the custom set to off it doesn't have to depend on Microsoft's one staying similar. Then turn it off by running: 
+Set-Mailbox dpatel@jon-maillab.org -ForwardingSmtpAddress $null -ForwardingAddress $null  
+Get-InboxRule -Mailbox dpatel@jon-maillab.org | Select-Object Name, ForwardTo, RedirectTo, Enabled  
+Then to check for authenticator for admin account run:  
+Get-MgUserAuthenticationMethod -UserId jontaylor@patchlab26.onmicrosoft.com | ForEach-Object { $_.AdditionalProperties['@odata.type'] } 
+Which should show:  
+![Result1](./images/result1.png)  
+And run to check for legacy authentication: 
+$since = (Get-Date).AddDays(-7).ToUniversalTime().ToString("yyyy-MM-dd'T'HH:mm:ss'Z'")  
+Get-MgAuditLogSignIn -Filter "createdDateTime ge $since" -All | 
+  Where-Object { $_.ClientAppUsed -in 'Exchange ActiveSync','Other clients','IMAP4','POP3','Authenticated SMTP' } | 
+  Select-Object CreatedDateTime, UserPrincipalName, ClientAppUsed, AppDisplayName 
 
