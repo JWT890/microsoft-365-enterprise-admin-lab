@@ -174,20 +174,28 @@ Get-MgGroup -Filter "displayName eq 'SG-Admin-Accounts'" | ForEach-Object {
 } 
 Which should show the dups: 
 ![Dup](./images/dup.png)  
-To delete run this in sequence: 
+To delete, run this in sequence:
+
+```powershell
 $keep = '3c7f8bc7-bf0a-49be-b591-a75ca616b422'
 $extras = Get-MgGroup -Filter "displayName eq 'SG-Admin-Accounts'" | Where-Object Id -ne $keep
 $policies = Get-MgIdentityConditionalAccessPolicy -All
 
 foreach ($g in $extras) {
-  $used = $policies | Where-Object {
-    $_.Conditions.Users.IncludeGroups -contains $g.Id -or $_.Conditions.Users.ExcludeGroups -contains $g.Id
-  }
-  if ($used) { Write-Warning "SKIPPING $($g.Id): used by $($used.DisplayName -join ', ')"; continue }
-  Remove-MgGroup -GroupId $g.Id
-  Write-Host "Deleted duplicate $($g.Id)"
-}
+    $used = $policies | Where-Object {
+        $_.Conditions.Users.IncludeGroups -contains $g.Id -or
+        $_.Conditions.Users.ExcludeGroups -contains $g.Id
+    }
 
+    if ($used) {
+        Write-Warning "SKIPPING $($g.Id): used by $($used.DisplayName -join ', ')"
+        continue
+    }
+
+    Remove-MgGroup -GroupId $g.Id
+    Write-Host "Deleted duplicate $($g.Id)"
+}
+```
 Get-MgGroup -Filter "displayName eq 'SG-Admin-Accounts'" | Select-Object Id, DisplayName  
 Which should keep the specific id, filters to see whether the SG group has more dups and checks the policies for extras and deletes the dups and run the commands from this:  
 ![Commmand1](./images/command1.png) 
