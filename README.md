@@ -283,3 +283,29 @@ Get-MgAuditLogSignIn -Filter "createdDateTime ge $since" -All |
   Where-Object { $_.ClientAppUsed -in 'Exchange ActiveSync','Other clients','IMAP4','POP3','Authenticated SMTP' } | 
   Select-Object CreatedDateTime, UserPrincipalName, ClientAppUsed, AppDisplayName 
 
+Now its time to enforce policies like CA003 so run: 
+$p = Get-MgIdentityConditionalAccessPolicy -All | Where-Object DisplayName -eq 'CA003-Block-Legacy-Auth'  
+Update-MgIdentityConditionalAccessPolicy -ConditionalAccessPolicyId $p.Id -State enabled  
+Then wait around 10 minutes and run:  
+Get-MgIdentityConditionalAccessPolicy -All | Where-Object DisplayName -like 'CA00*' | Sort-Object DisplayName | Select-Object DisplayName, State | Format-Table -AutoSize 
+![3](./images/3.png)  
+Since this is testing CA003, it is good. Then sign in as Dev Patel through myaccount.microsoft.com for account and Outlook, then head to Entra -> Monitoring -> Sign in logs and check Conditional Access on the dev patel log: 
+![Log](./images/log.png)  
+With that it shows the correct result, noe time for CA002.  
+Run:  
+$p = Get-MgIdentityConditionalAccessPolicy -All | Where-Object DisplayName -eq 'CA002-Require-MFA-Admins' 
+Update-MgIdentityConditionalAccessPolicy -ConditionalAccessPolicyId $p.Id -State enabled  
+Then wait around 10 minutes.  
+Then open adm-secops in security.microsoft.com, adm-helpdesk in entra.microsoft.com, and bg-admin1 in myaccount.microsoft.com.  
+ADM-Secops log: 
+![Sec1](./images/sec1.png)  
+ADM-Helpdesk log: 
+![Help](./images/help.png)  
+And BG-Admin1:  
+![Bg](./images/bg.png)  
+Unlike the other two since BG is a admin account and has the expected result of No MFA. 
+Results can also be pulled in as text by running this command with result:  
+![Result2](./images/result2.png) 
+And confirm the policies by running:  
+![Confirm](./images/confirm.png)  
+
