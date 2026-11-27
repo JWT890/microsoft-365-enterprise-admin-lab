@@ -52,3 +52,39 @@
 2026-11-22T23:56:56Z [WARN] [gator] Admin initial passwords written to C:\Users\gator\microsoft-365-enterprise-admin-lab\scripts\groups\..\..\output\admin-initial-passwords.csv (gitignored). Delete after first sign-in.
 2026-11-22T23:56:56Z [INFO] [gator] Role matrix written to C:\Users\gator\microsoft-365-enterprise-admin-lab\scripts\groups\..\..\output\role-matrix.csv
 2026-11-22T23:56:56Z [INFO] [gator] Access model complete. Next: PIM policies, boundary tests, then Day 3 (Conditional Access).
+2026-11-27T05:10:07Z [INFO] [gator] Exists: adm-helpdesk@jon-maillab.org
+2026-11-27T05:10:08Z [INFO] [gator] Exists: adm-useradmin@jon-maillab.org
+2026-11-27T05:10:08Z [INFO] [gator] Exists: adm-exchange@jon-maillab.org
+2026-11-27T05:10:08Z [INFO] [gator] Exists: adm-secops@jon-maillab.org
+2026-11-27T05:10:08Z [INFO] [gator] Exists: adm-soc@jon-maillab.org
+2026-11-27T05:10:15Z [INFO] [gator] Group exists: SG-FinanceShare-RW
+2026-11-27T05:10:15Z [INFO] [gator] Group exists: SG-HRFiles-RW
+2026-11-27T05:10:16Z [INFO] [gator] Group exists: SG-ITTools-Admins
+2026-11-27T05:10:16Z [INFO] [gator] Group exists: SG-VPN-Users
+2026-11-27T05:10:18Z [INFO] [gator] Group exists: SG-Executives
+2026-11-27T05:10:27Z [INFO] [gator] Group exists: RG-SecurityOps
+2026-11-27T05:10:28Z [WHATIF] [gator] Would assign Security Reader to RG-SecurityOps (Eligible, Tenant)
+2026-11-27T05:10:28Z [WHATIF] [gator] Would assign Helpdesk Administrator to adm-helpdesk@jon-maillab.org (Eligible, AU-Finance)
+2026-11-27T05:10:28Z [WHATIF] [gator] Would assign User Administrator to adm-useradmin@jon-maillab.org (Eligible, Tenant)
+2026-11-27T05:10:29Z [WHATIF] [gator] Would assign Exchange Administrator to adm-exchange@jon-maillab.org (Eligible, Tenant)
+2026-11-27T05:10:29Z [WHATIF] [gator] Would assign Security Administrator to adm-secops@jon-maillab.org (Eligible, Tenant)
+2026-11-27T05:10:29Z [INFO] [gator] Role matrix written to C:\Users\gator\microsoft-365-enterprise-admin-lab\scripts\groups\..\..\output\role-matrix.csv
+2026-11-27T05:10:29Z [INFO] [gator] Access model complete. Next: PIM policies, boundary tests, then Day 3 (Conditional Access).
+2026-11-27T05:11:04Z [INFO] [gator] Exists: adm-helpdesk@jon-maillab.org
+2026-11-27T05:11:04Z [INFO] [gator] Exists: adm-useradmin@jon-maillab.org
+2026-11-27T05:11:05Z [INFO] [gator] Exists: adm-exchange@jon-maillab.org
+2026-11-27T05:11:05Z [INFO] [gator] Exists: adm-secops@jon-maillab.org
+2026-11-27T05:11:05Z [INFO] [gator] Exists: adm-soc@jon-maillab.org
+2026-11-27T05:11:05Z [INFO] [gator] Group exists: SG-FinanceShare-RW
+2026-11-27T05:11:06Z [INFO] [gator] Group exists: SG-HRFiles-RW
+2026-11-27T05:11:07Z [INFO] [gator] Group exists: SG-ITTools-Admins
+2026-11-27T05:11:08Z [INFO] [gator] Group exists: SG-VPN-Users
+2026-11-27T05:11:16Z [INFO] [gator] Group exists: SG-Executives
+2026-11-27T05:11:17Z [INFO] [gator] Group exists: RG-SecurityOps
+2026-11-27T05:11:22Z [ACTION] [gator] Assigned Security Reader to RG-SecurityOps (Eligible, Tenant)
+2026-11-27T05:11:26Z [ACTION] [gator] Assigned Helpdesk Administrator to adm-helpdesk@jon-maillab.org (Eligible, AU-Finance)
+2026-11-27T05:11:30Z [ACTION] [gator] Assigned User Administrator to adm-useradmin@jon-maillab.org (Eligible, Tenant)
+2026-11-27T05:11:33Z [ACTION] [gator] Assigned Exchange Administrator to adm-exchange@jon-maillab.org (Eligible, Tenant)
+2026-11-27T05:11:36Z [ACTION] [gator] Assigned Security Administrator to adm-secops@jon-maillab.org (Eligible, Tenant)
+2026-11-27T05:11:37Z [INFO] [gator] Role matrix written to C:\Users\gator\microsoft-365-enterprise-admin-lab\scripts\groups\..\..\output\role-matrix.csv
+2026-11-27T05:11:37Z [INFO] [gator] Access model complete. Next: PIM policies, boundary tests, then Day 3 (Conditional Access).

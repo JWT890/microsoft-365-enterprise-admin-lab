@@ -103,7 +103,9 @@ function New-AdminUser {
 
 function Get-OrNewGroup {
     param([string]$Name, [string]$Description, [switch]$RoleAssignable)
-    $g = Get-MgGroup -Filter "displayName eq '$Name'" | Select-Object -First 1
+    $matches = @(Get-MgGroup -Filter "displayName eq '$Name'")
+    if ($matches.Count -gt 1) { throw "Found $($matches.Count) groups named '$Name' (IDs: $($matches.Id -join ', ')). Delete the duplicates first." }
+    $g = $matches | Select-Object -First 1
     if ($g) { Write-LabLog "Group exists: $Name"; return $g }
     if (-not $PSCmdlet.ShouldProcess($Name, 'Create group')) { Write-LabLog "Would create group $Name" WHATIF; return $null }
     $p = @{ DisplayName = $Name; Description = $Description; MailEnabled = $false; MailNickname = (($Name -replace '[^A-Za-z0-9]', '').ToLower()); SecurityEnabled = $true; GroupTypes = @() }

@@ -317,3 +317,68 @@ Results can also be pulled in as text by running this command with result:
 And confirm the policies by running:  
 ![Confirm](./images/confirm.png)  
 
+Now its time time to enforce CA001 start by running:  
+Get-Content .\output\role-matrix.csv | ConvertFrom-Csv | Format-Table -AutoSize. Check whether adm-helpdesk is scoped to just All-Finance or not: 
+![Scope2](./images/scope2.png)  
+Then issue the TAPs for sign in like so:  
+foreach ($a in 'adm-helpdesk','adm-useradmin','adm-exchange','adm-secops','adm-soc') {  
+  $tap = New-MgUserAuthenticationTemporaryAccessPassMethod -UserId "$a@jon-maillab.org" -BodyParameter @{ lifetimeInMinutes = 60; isUsableOnce = $false } 
+  [pscustomobject]@{ Account = $a; TAP = $tap.TemporaryAccessPass } 
+} 
+Then sign in as adm-helpdesk at entra.microsoft.com and go to Users -> dpatel and click on reset password and should go through:  
+![Reset](./images/reset.png)  
+Then go to Ben Foster and try to reset his password 
+![Foster](./images/foster.png)  
+And try to create a new user: 
+![User](./images/user.png)  
+Next sign in as adm-useradmin and create a user and see this: 
+![User1](./images/user1.png)  
+And editing a group:  
+![Group](./images/group.png)  
+Then go to Protection -> Conditional Access and see no access:  
+[Con](./images/connect.png) 
+Then sign in as admin-exchange at admin.exchange.microsoft.com and go to Recipients -> Mailboxes and see the mailboxes: 
+![Box](./images/box.png)  
+And resetting a user password as well:  
+![Reset1](./images/reset1.png)  
+Next sign in as adm-secops at security.microsoft.com and open the incidents and alerts section and see about changing a status of an alert: 
+![Alert](./images/alert.png)  
+Since there are no alerts to edit, move on to entra.microsoft.com and try to create an user:  
+![Create](./images/create.png)  
+Next sign in as adm-soc in security.microsoft.com and look at both incidents and alerts:  
+![Incident](./images/incident.png)  
+![Alert1](./images/alert1.png)  
+Since there are no incidents and alerts, there is nothing to look at, along with changing a setting or classification since there are none. 
+
+Now its time to add the eligible assignments with What if run first, then run the live one with:  
+.\scripts\groups\New-LabAccessModel.ps1 -Domain jon-maillab.org -AssignmentType Eligible  
+![Eligible](./images/eligible.png)  
+Then run to confirm existence:  
+$ids = $before.PrincipalId | Select-Object -Unique  
+Get-MgRoleManagementDirectoryRoleEligibilitySchedule -All | Where-Object { $_.PrincipalId -in $ids } |  
+  Select-Object @{n='Role';e={$defs[$_.RoleDefinitionId]}}, DirectoryScopeId, PrincipalId | Format-Table -AutoSize  
+![Id](./images/id.png)  
+Then remove:  
+![Remove](./images/remove.png)  
+Which is a What if run to run it again without it and verify from this picture: 
+![Removed](./images/removed.png)  
+And confirm the eligible assignments are there: 
+![Perm](./images/perm.png)  
+
+Next go to Entra ID -> ID Governance -> Privileged Identity Management -> Microsoft Entra roles and go to Settings  
+[IDGov](./images/idgov.png) 
+And edit Security Admin, User Admin, Exchange Admin and Helpdesk Admin and add: 
+Activation maximum duration: 2 hours  
+On activation, require: Azure MFA and justification 
+Require approvalL off. Then afterwards to see for times:  
+[Modify](./images/modify.png) 
+Then test with a TAP with adm-secops at entra.microsoft.com, then go check Conditional Access in the sign in logs:  
+![Denied](./images/denied.png)  
+This means that it doesn't have an active role anymore. Then go to Id Governance to PIM and click on my roles and get here: 
+![PIM](./images/pim.png)  
+Then click on activate, give the reason and click on activate which should grant access to Defender but there aren't any logs or incidents to check.  
+Then click on Audity History within PIM and notice the recent audits: 
+![Audit](./images/audit.png)  
+![Audit1](./images/audit1.png)  
+Then go deactivate it and get the result while no role is held by running in the picture: 
+![Role](./images/role.png)  
