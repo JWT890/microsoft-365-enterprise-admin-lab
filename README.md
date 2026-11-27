@@ -71,7 +71,7 @@ Then check with ecross by running:
 .\scripts\identity\Invoke-Leaser.ps1 -UserPrincipalName eross@jon-maillab.org with no errors this time: 
 ![Ran](./images/ran.png)    
 
-# Access
+# Access, Enforcement, and Lockout
 First after adding Claude generated New-LabAccessModel.ps1 do a test run with .\scripts\groups\New-LabAccessModel.ps1 -Domain jon-maillab.org -CreateBreakGlass -BreakGlassDomain patchlab26.onmicrosoft.com -WhatIf to see if a test run works.    
 And make sure to run: Connect-MgGraph -NoWelcome -Scopes User.ReadWrite.All,Group.ReadWrite.All,Directory.ReadWrite.All,RoleManagement.ReadWrite.Directory,Policy.ReadWrite.ConditionalAccess,Policy.Read.All,Application.Read.All,UserAuthenticationMethod.ReadWrite.All,IdentityRiskyUser.ReadWrite.All,AuditLog.Read.All,DelegatedPermissionGrant.ReadWrite.All,User-PasswordProfile.ReadWrite.All,AdministrativeUnit.ReadWrite.All,RoleEligibilitySchedule.ReadWrite.Directory just in case PowerShell was signed out of.   
 After running:  
@@ -382,3 +382,33 @@ Then click on Audity History within PIM and notice the recent audits:
 ![Audit1](./images/audit1.png)  
 Then go deactivate it and get the result while no role is held by running in the picture: 
 ![Role](./images/role.png)  
+
+Now time to do a lockout drill start by running Test-Path .\scripts\conditional-access\Invoke-LockoutDrill.ps1 to check to see if its there.  
+Then do a what if run first with: 
+.\scripts\conditional-access\Invoke-LockoutDrill.ps1 -Phase Start -Domain jon-maillab.org -WhatIf 
+![Drill](./images/drill.png)  
+Then without what if: 
+![Drill1](./images/drill1.png)
+Running this creates the drill user account with a password and since it expects to say locked out, go to myaccount.microsoft.com and sign in and see the lockout:  
+![Lock](./images/lock.png)  
+Then lets run:  
+.\scripts\conditional-access\Invoke-LockoutDrill.ps1 -Phase Verify -Domain jon-maillab.org and wait a few minutes, then sign in bg-admin1 at entra.microsoft.com and go Sign in logs in Conditional access and look at the log with drill account and disable the CA-DRILL-Block-DrillGroup, but first notice the failure:  
+![Failure](./images/lockout-drill-policy-failure-blurred.png) 
+Then go to Conditional Access -> Policies and click on CA-DRILL and change the status of on to off, then open up myaccount.microsoft.com and get signed in as drill-user: 
+![Drill2](./images/drill2.png)  
+Then run .\scripts\conditional-access\Invoke-LockoutDrill.ps1 -Phase Cleanup -Domain jon-maillab.org to delete the user and policy, then enforce CA0001.  
+Start by issusing TAPs to a few users by running: 
+$tap = New-MgUserAuthenticationTemporaryAccessPassMethod -UserId dpatel@jon-maillab.org -BodyParameter @{ lifetimeInMinutes = 60; isUsableOnce = $false } 
+$tap.TemporaryAccessPass  
+Then run: 
+$p = Get-MgIdentityConditionalAccessPolicy -All | Where-Object DisplayName -eq 'CA001-Require-MFA-AllUsers' 
+And: Update-MgIdentityConditionalAccessPolicy -ConditionalAccessPolicyId $p.Id -State enabled 
+To enforce CA001 and then wait around 10 minutes or so, and with enforcing MFA, dont use TAPs since MFA will not pop up.  
+Lets use tbrooks since they haven't been used yet so use his password by running: 
+Import-Csv .\output\initial-passwords.csv | Where-Object UserPrincipalName -like 'tbrooks*' and sign in and see the MFA screen: 
+![MFA](./images/mfa.png)  
+Which shows that MFA works so get it set up in the Authenticator app and get signed in and check the logs in Sign in Logs:  
+![MFA1](./images/mfa1.png)    
+With CA001 enforced, time to move on to the phishing part.
+
+# Phishing

@@ -1,0 +1,11 @@
+2026-11-27T20:20:40Z [WHATIF] [gator] Would create drill-user@jon-maillab.org
+2026-11-27T20:20:47Z [WHATIF] [gator] Would create policy CA-DRILL-Block-DrillGroup (disabled, verify, then enable)
+2026-11-27T20:21:43Z [ACTION] [gator] Created drill user drill-user@jon-maillab.org
+2026-11-27T20:21:44Z [ACTION] [gator] Created SG-LockoutDrill (3a68e96d-e086-49ba-ada6-c9b1e9ccad54)
+2026-11-27T20:21:45Z [INFO] [gator] Safety check passed: SG-LockoutDrill contains only drill-user@jon-maillab.org
+2026-11-27T20:21:47Z [ACTION] [gator] Policy verified (targets only SG-LockoutDrill, excludes SG-CA-Exclusions)
+2026-11-27T20:21:49Z [ACTION] [gator] ENFORCED CA-DRILL-Block-DrillGroup at 2026-11-27T20:21:49.3181929Z. Drill user is now locked out.
+2026-11-27T20:29:29Z [WARN] [gator] No drill sign-ins found yet. Sign in as the drill user, wait a few minutes, and retry.
+2026-11-27T20:44:23Z [ACTION] [gator] Deleted policy CA-DRILL-Block-DrillGroup
+2026-11-27T20:44:24Z [ACTION] [gator] Deleted group SG-LockoutDrill
+2026-11-27T20:44:24Z [ACTION] [gator] Deleted drill-user@jon-maillab.org (kept 30 days in Deleted users)
