@@ -442,4 +442,25 @@ Sender domain:
 Delivery action:  
 ![Action1](./images/action1.png)  
 ![Action2](./images/action2.png)  
-Sender most of the time was my own gmail, outlook test emails, and a marketing email from SMTP GO once
+Sender most of the time was my own gmail, outlook test emails, and a marketing email from SMTP GO once, November 27th emails were blocked since I did a few emails that seemed risky. I also checked incidents and alerts too and found no detections for any alerts or detections so in production will require fine tuning and creation.  
+In Advanced hunting enter in the KQL: 
+Email Events
+| where Timestamp > ago(1d) and SenderFromAddress has "gmail.com" 
+| project Timestamp, SenderFromAddress, RecipientEmailAddress, Subject, DeliveryAction, ThreatTypes 
+Then hit enter: 
+![Query](./images/query.png)  
+From this KQL, notice the emails that were detected along with deliveryaction, subject, sender and recipient, the timestamp and threat types of phish and spam. 
+Then run anaother KQL to get the URL click on from the password reset one:  
+EmailUrlInfo  
+| where Timestamp > ago(3h) 
+| project Timestamp, AccountUpn, Url, ActionType, IsClickedThrough, Workload
+| order by Timestamp desc 
+![Click2](./images/click2.png)  
+Notice from this image the details of the timestamp, account affected, the url, actiontype, and worklaod and shows the link was rewritten.  
+Run a third and final KQL with: 
+EmailUrlInfo  
+| where Timestamp > ago(6h) and Url has "example.com"
+| project Timestamp, NetworkMessageId, Url, UrlDomain 
+![Query1](./images/query1.png)  
+From this KQL, it shows that the click was allowed and went through.  
+
