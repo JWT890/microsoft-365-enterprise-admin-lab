@@ -412,3 +412,34 @@ Which shows that MFA works so get it set up in the Authenticator app and get sig
 With CA001 enforced, time to move on to the phishing part.
 
 # Phishing
+To begin, lets start by creating a shared mailbox by running: 
+New-Mailbox -Shared -Name "Support" -PrimarySmtpAddress support@jon-maillab.org 
+Add-MailboxPermission -Identity support@jon-maillab.org -User dpatel@jon-maillab.org -AccessRights FullAccess -AutoMapping $true  
+Which will create the shared mailbox called support and give dpatel read access only: 
+![Mail2](./images/mail2.png)  
+Then send an email to dpatel and a couple other accounts with a subject or Need help and in the message say: Quick favor, are you at your desk? I need you to handle a payment today? and send it to them.  
+![Email](./images/email.png)  
+Something to note here is that the email didn't get quarantined, probably because my gmail display name didn't change over but the antiphish worked so lets redo the first email by changing my name to Casey Morgan and send the email again.  
+After sending it again, it doesn't pop up again in the Dev Patel outlook, which means likely quarantine so go to Exchange and go to Message Trace and trace emails from the sender and see the results: 
+![Trace1](./images/trace1.png)  
+This shows the message was successfully quarantined and prevented the email from being fully sent.  
+Now I sent a another message to Dev Patel for a password phishing email:  
+![Reset](./images/reset2.png) 
+Hovering over the link presents a link with safelinks.protection.outlook.com with it and after clicking on it:  
+![Link](./images/link.png)  
+![Safe](./images/safe.png)  
+Now go to Defender -> Email & Collaboration -> Explorer and notice different things from there like the emails sent:  
+![Sent](./images/sent.png)  
+With different classifications as well: 
+Email threat class: 
+![Class](./images/class.png)  
+With this split between class and task. 
+URL clicks: 
+![Click](./images/click.png)  
+![Click1](./images/click1.png)  
+Sender domain:  
+![Domain](./images/domain.png)  
+Delivery action:  
+![Action1](./images/action1.png)  
+![Action2](./images/action2.png)  
+Sender most of the time was my own gmail, outlook test emails, and a marketing email from SMTP GO once
