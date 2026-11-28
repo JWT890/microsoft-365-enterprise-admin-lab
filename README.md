@@ -462,5 +462,20 @@ EmailUrlInfo
 | where Timestamp > ago(6h) and Url has "example.com"
 | project Timestamp, NetworkMessageId, Url, UrlDomain 
 ![Query1](./images/query1.png)  
-From this KQL, it shows that the click was allowed and went through.  
+From this KQL, it shows that the click was allowed and went through. In production, links need to properly verified and checked to ensure that no malicious or risky actors or threats can get in.  
 
+# Identity Protection
+Start by issuing a TAP sequence here by running:  
+$tap = New-MgUserAuthenticationTemporaryAccessPassMethod -UserId dpatel@jon-maillab.org -BodyParameter @{ lifetimeInMinutes = 60; isUsableOnce = $false }
+$tap.TemporaryAccessPass  
+Then go to myaccount.microsoft.com and fail the sign in at least 3 times before signing in with the TAP.  
+Do make the mailbox peristant run:  
+New-InboxRule -Mailbox dpatel@jon-maillab.org -Name "Invoice forward" -SubjectContainsWords "invoice","payment" -ForwardTo "your.address@gmail.com" 
+New-InboxRule -Mailbox dpatel@jon-maillab.org -Name "Hide alerts" -SubjectContainsWords "security alert","password" -DeleteMessage $true  
+![Rule](./images/rule.png)  
+And to confirm they work run: 
+Import-Module .\scripts\common\LabCommon.psm1 -Force  
+Get-InboxRule -Mailbox dpatel@jon-maillab.org | Select-Object Name, Enabled, ForwardTo, DeleteMessage 
+(Get-LabPersistence -UserPrincipalName dpatel@jon-maillab.org).InboxRules | Format-Table Name, Suspicious, ForwardTo, DeleteMessage -AutoSize 
+![Run1](./images/run1.png)  
+From this, it shows that Invoice Forward and Hide Alerts are enabled and Suspicious: True is on
